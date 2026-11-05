@@ -1,0 +1,58 @@
+{
+  "name": "arsheefna-desktop",
+  "version": "1.5.3",
+  "author": "أرشيفنا",
+  "description": "تطبيق أرشيفنا المكتبي",
+  "main": "main.cjs",
+  "private": true,
+  "scripts": {
+    "dist": "electron-builder --win nsis --publish never",
+    "start": "electron .",
+    "prepare:assets": "node scripts/prepare-assets.mjs",
+    "prestart": "pnpm prepare:assets",
+    "predist": "pnpm prepare:assets"
+  },
+  "devDependencies": {
+    "@tesseract.js-data/ara": "1.0.0",
+    "@tesseract.js-data/eng": "1.0.0",
+    "electron": "43.8.1",
+    "electron-builder": "26.15.3",
+    "pdfjs-dist": "6.4.299",
+    "tesseract.js": "7.0.0"
+  },
+  "build": {
+    "appId": "com.arsheefna.desktop",
+    "productName": "أرشيفنا",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.cjs",
+      "preload.cjs",
+      "server.mjs",
+      "public/**/*",
+      "package.json"
+    ],
+    "asar": false,
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        "nsis"
+      ],
+      "artifactName": "Arsheefna-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "أرشيفنا",
+      "perMachine": true,
+      "allowElevation": true,
+      "runAfterFinish": true,
+      "deleteAppDataOnUninstall": false
+    }
+  }
+}
