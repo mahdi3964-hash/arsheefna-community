@@ -1,0 +1,4 @@
+allowBuilds:
+  electron: true
+  tesseract.js: true
+  electron-winstaller: false
