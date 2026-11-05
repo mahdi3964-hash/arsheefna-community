@@ -1,0 +1,38 @@
+name: "Bug report / تقرير خطأ"
+description: "Report a reproducible functional bug / الإبلاغ عن خلل قابل للتكرار"
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: "Do not include real documents, credentials, or sensitive information. For security vulnerabilities, use private reporting rather than a public issue. / لا تضع بيانات حقيقية أو أسراراً."
+  - type: textarea
+    id: description
+    attributes:
+      label: "Problem / وصف المشكلة"
+      description: "What happened? / شنو المشكلة؟"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: "Steps to reproduce / خطوات إعادة المشكلة"
+      placeholder: "1. ...\n2. ...\n3. ..."
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: "Expected vs actual / المتوقع والفعلي"
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: "Environment / بيئة التشغيل"
+      placeholder: "Windows version, Node.js version, application commit"
+  - type: textarea
+    id: evidence
+    attributes:
+      label: "Relevant code or logs / الملف والسطر أو سجل الخطأ"
+      description: "Remove secrets and personal data before posting."
