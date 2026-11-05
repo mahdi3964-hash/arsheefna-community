@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>معاينة الملف — أرشيفنا</title>
+  <link rel="stylesheet" href="/file-viewer.css">
+  <script type="module" src="/file-viewer.mjs"></script>
+</head>
+<body>
+  <div class="viewer-shell">
+    <header class="viewer-toolbar" aria-label="أدوات معاينة الملف">
+      <span id="file-title" class="file-title">معاينة الملف</span>
+      <div id="page-controls" class="control-group" hidden>
+        <button id="previous-page" type="button" disabled>السابقة</button>
+        <label class="page-position">صفحة <input id="page-number" type="number" inputmode="numeric" min="1" value="1" aria-label="رقم الصفحة" disabled> من <span id="page-count">١</span></label>
+        <button id="next-page" type="button" disabled>التالية</button>
+      </div>
+      <div class="control-group zoom-controls">
+        <button id="zoom-out" type="button" aria-label="تصغير" title="تصغير" disabled>−</button>
+        <output id="zoom-value" aria-live="polite">—</output>
+        <button id="zoom-in" type="button" aria-label="تكبير" title="تكبير" disabled>+</button>
+        <button id="fit-page" type="button" disabled>ملاءمة الصفحة</button>
+      </div>
+    </header>
+    <main id="viewer-stage" class="viewer-stage" tabindex="0" aria-label="صفحات الملف">
+      <div id="viewer-status" class="viewer-status" role="status" aria-live="polite">جارٍ تحميل المعاينة…</div>
+      <div id="preview-surface" class="preview-surface" hidden>
+        <canvas id="preview-canvas" class="preview-canvas" role="img" aria-label="صفحة الوثيقة" hidden></canvas>
+        <img id="preview-image" class="preview-image" alt="" hidden>
+      </div>
+    </main>
+  </div>
+  <div id="print-pages" aria-hidden="true"></div>
+</body>
+</html>
