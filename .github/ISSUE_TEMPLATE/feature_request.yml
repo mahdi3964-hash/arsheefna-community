@@ -1,0 +1,25 @@
+name: "Feature request / اقتراح تحسين"
+description: "Suggest a new feature or improvement / اقتراح ميزة أو تطوير"
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: "Problem to solve / المشكلة المطلوب حلها"
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: "Proposed solution / الحل المقترح"
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: "Alternatives and trade-offs / البدائل والملاحظات"
+  - type: textarea
+    id: impact
+    attributes:
+      label: "Expected benefit / الفائدة المتوقعة"
