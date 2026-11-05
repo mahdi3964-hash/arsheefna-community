@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: "Security reporting / الإبلاغ الأمني"
+    url: "https://github.com/mahdi3964-hash/arsheefna-community/security/advisories/new"
+    about: "Report security vulnerabilities privately if private vulnerability reporting is enabled. Do not publish exploit details in a public issue."
