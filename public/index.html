@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#153943">
+  <title>أرشيفنا | الأرشفة الإلكترونية</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/ocr/tesseract.min.js" defer></script>
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div id="app" class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">أ</div>
+        <div><strong>أرشيفنا</strong><span>الأرشفة الإلكترونية</span></div>
+      </div>
+      <div class="nav-caption">القائمة الرئيسية</div>
+      <nav class="main-nav" aria-label="القائمة الرئيسية">
+        <button class="nav-item active" data-page="documents"><span class="nav-icon">▤</span>كل الوثائق</button>
+        <button class="nav-item" data-page="new"><span class="nav-icon">＋</span>إضافة وثيقة</button>
+        <button class="nav-item" data-page="reminders"><span class="nav-icon">◷</span>مواعيد المتابعة</button>
+      </nav>
+      <div class="nav-caption admin-only hidden">متابعة</div>
+      <nav class="main-nav admin-only hidden" aria-label="متابعة الأرشيف">
+        <button class="nav-item" data-page="users"><span class="nav-icon">♙</span>المستخدمون</button>
+        <button class="nav-item" data-page="audit"><span class="nav-icon">◷</span>سجل الحركة</button>
+        <button class="nav-item" data-page="trash"><span class="nav-icon">▤</span>سلة المحذوفات</button>
+        <button class="nav-item" data-page="backup"><span class="nav-icon">⛨</span>نسخ احتياطي واستعادة</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="privacy-note"><span class="privacy-dot"></span><span>وثائقك محفوظة على<br>هذا اللابتوب</span></div>
+        <button class="user-card" id="user-menu" type="button" aria-label="تسجيل الخروج">
+          <span class="avatar" id="user-avatar">م</span>
+          <span class="user-card-text"><strong id="user-name">المستخدم</strong><small id="user-role">موظف</small></span>
+          <span class="logout-mark">↪</span>
+        </button>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobile-menu" aria-label="فتح القائمة">☰</button>
+        <div class="breadcrumbs"><span>الرئيسية</span><b>/</b><strong id="page-crumb">كل الوثائق</strong></div>
+        <div class="topbar-tools"><span class="top-date" id="today-label"></span><span class="top-avatar" id="top-avatar">م</span></div>
+      </header>
+      <section class="content" id="content" aria-live="polite"></section>
+      <footer class="footer"><span>أرشيفنا</span><span>أرشيف شخصي للوثائق الرسمية</span></footer>
+    </main>
+  </div>
+
+  <div id="modal-root"></div>
+  <div id="toast-root" class="toast-root" aria-live="polite"></div>
+</body>
+</html>
