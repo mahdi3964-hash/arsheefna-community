@@ -601,11 +601,18 @@ function safeOriginalName(filename) {
 }
 function addDocRecord(doc, user, file, storageName) {
   const time = now();
+  db.exec('BEGIN IMMEDIATE');
+  try {
   const archiveNo = nextArchiveNumber();
   db.prepare(`INSERT INTO documents(id,archive_no,title,doc_number,doc_date,due_date,doc_type,department,category,sender,recipient,status,notes,file_original,file_storage,mime_type,file_size,created_by,created_at,updated_at)
     VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`).run(doc.id, archiveNo, doc.title, doc.doc_number, doc.doc_date, doc.due_date, doc.doc_type, doc.department, doc.category, doc.sender, doc.recipient, doc.status, doc.notes, file.original, storageName, file.mime, file.content.length, user.id, time, time);
   logEvent('إضافة وثيقة', user.id, doc.id, `${doc.doc_number} — ${doc.title}`);
   logDocumentActivity(doc.id, user.id, 'إضافة إلى الأرشيف', `${archiveNo} · ${doc.doc_number} — ${doc.title}`);
+  db.exec('COMMIT');
+  } catch (error) {
+    db.exec('ROLLBACK');
+    throw error;
+  }
 }
 function nextArchiveNumber() {
   const current = Number(db.prepare("SELECT MAX(CAST(SUBSTR(archive_no,4) AS INTEGER)) AS n FROM documents WHERE archive_no GLOB 'AR-[0-9]*'").get().n || 0);
@@ -691,7 +698,7 @@ function makeBackup() {
     ];
     for (const name of readdirSync(FILES)) {
       const path = join(FILES, name);
-      if (statSync(path).isFile() && !name.endsWith('.tmp')) entries.push({ name: `files/${name}`, data: readFileSync(path) });
+      if (/^[0-9a-f-]{36}\.(pdf|png|jpg|jpeg|doc|docx|xls|xlsx)$/i.test(name) && statSync(path).isFile()) entries.push({ name: `files/${name}`, data: readFileSync(path) });
     }
     return zipArchive(entries);
   } finally {
@@ -1438,8 +1445,16 @@ async function handle(req, res) {
     const previewTypes = { '.pdf': 'application/pdf', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg' };
     const inline = url.searchParams.get('view') === '1' && previewTypes[ext];
     res.writeHead(200, { 'content-type': inline ? previewTypes[ext] : (DOWNLOAD_MIME.get(ext) || 'application/octet-stream'), 'content-length': row.file_size, 'content-disposition': `${inline ? 'inline' : 'attachment'}; filename*=UTF-8''${safeName}`, 'cache-control': 'no-store', 'x-content-type-options': 'nosniff' });
-    const { createReadStream } = await import('node:fs'); createReadStream(filepath).pipe(res);
-    logEvent(inline ? 'معاينة ملف' : 'تنزيل ملف', user.id, row.id, row.file_original); return;
+    const { createReadStream } = await import('node:fs');
+    const { pipeline } = await import('node:stream/promises');
+    try {
+      await pipeline(createReadStream(filepath), res);
+      logEvent(inline ? 'معاينة ملف' : 'تنزيل ملف', user.id, row.id, row.file_original);
+    } catch (error) {
+      console.error('تعذر بث ملف الوثيقة:', error);
+      if (!res.destroyed) res.destroy(error);
+    }
+    return;
   }
   if (req.method === 'GET' && path === '/api/users') {
     const users = db.prepare('SELECT id,full_name,username,role,active,created_at,permissions FROM users ORDER BY full_name').all();
